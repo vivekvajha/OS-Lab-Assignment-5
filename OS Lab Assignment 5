@@ -6,7 +6,7 @@ int b[5];   //integer array created for critical section
 typedef int semaphore;
 semaphore S=1, E=sizeofbuffer, F=0; //S will allow only one process to access the buffer at a time (Mutex)
 
-void wait(int &x) 
+void semWait(int &x) 
 {
     //if x is greater than 0 then it's value will be decremented
     if(x>0);
@@ -15,7 +15,7 @@ void wait(int &x)
     }
 }
 
-void signal(int &x)
+void semSignal(int &x)
 {
     x++;  //value will get incremented
 }
@@ -35,11 +35,11 @@ int main()
             if(E!=0&&S==1)
             {
                 cout<<"Enter the data"<<endl;
-                wait(E);  //Waits until empty>0 and decremented
-                wait(S);  // Mutex locked 
+                semWait(E);  //Waits until empty>0 and decremented
+                semWait(S);  // Mutex locked 
                 cin>>b[F]; //data inputted
-                signal(S); //Mutex released
-                signal(F); //Increment full
+                semSignal(S); //Mutex released
+                semSignal(F); //Increment full
             }
             else
             {
@@ -52,11 +52,11 @@ int main()
         {
             if(F>0&&S==1)
             {
-                wait(F);  //Waits until full>0 and decremented 
-                wait(S);  //Mutex locked
+                semWait(F);  //Waits until full>0 and decremented 
+                semWait(S);  //Mutex locked
                 cout<<"The data is: "<<b[F]<<endl; //Print the data which was inputted above
-                signal(S); //Mutex released
-                signal(E); //Increment empty
+                semSignal(S); //Mutex released
+                semSignal(E); //Increment empty
             }
             else
             {
