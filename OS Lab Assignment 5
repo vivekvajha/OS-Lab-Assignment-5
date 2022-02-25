@@ -1,0 +1,69 @@
+#include <iostream>
+using namespace std;
+
+const int sizeofbuffer=5;  //The size of the buffer will be fixed to 5
+int b[5];   //integer array created for critical section
+typedef int semaphore;
+semaphore S=1, E=sizeofbuffer, F=0; //S will allow only one process to access the buffer at a time (Mutex)
+
+void wait(int x) 
+{
+    //if x is greater than 0 then it's value will be decremented
+    if(x>0);
+    {
+       x--; 
+    }
+}
+
+void signal(int x)
+{
+    x++;  //value will get incremented
+}
+
+int main()
+{
+    while(true)
+    {
+        cout<<"Empty:"<<E<<" Full:"<<F<<" Mutex:"<<S<<endl;
+        cout<<"Enter your choice 1.Produce  2.Consume"<<endl;
+        int a;
+        cin>>a;
+        
+        //Producer
+        if(a==1)
+        {
+            if(E!=0&&S==1)
+            {
+                cout<<"Enter the data"<<endl;
+                wait(E);  //Waits until empty>0 and decremented
+                wait(S);  // Mutex locked 
+                cin>>b[F]; //data inputted
+                signal(S); //Mutex released
+                signal(F); //Increment full
+            }
+            else
+            {
+                cout<<"The buffer is full"<<endl; //Overflow check
+            }
+        }
+        
+        //Consumer
+        else if(a==2)
+        {
+            if(F>0&&S==1)
+            {
+                wait(F);  //Waits until full>0 and decremented 
+                wait(S);  //Mutex locked
+                cout<<"The data is: "<<b[F]<<endl; //Print the data which was inputted above
+                signal(S); //Mutex released
+                signal(E); //Increment empty
+            }
+            else
+            {
+                cout<<"The buffer is empty"<<endl; //Underflow check
+            }
+        }
+        else break;
+    }
+return 0;
+}
