@@ -6,7 +6,7 @@ int b[5];   //integer array created for critical section
 typedef int semaphore;
 semaphore S=1, E=sizeofbuffer, F=0; //S will allow only one process to access the buffer at a time (Mutex)
 
-void wait(int x) 
+void wait(int &x) 
 {
     //if x is greater than 0 then it's value will be decremented
     if(x>0);
@@ -15,7 +15,7 @@ void wait(int x)
     }
 }
 
-void signal(int x)
+void signal(int &x)
 {
     x++;  //value will get incremented
 }
